@@ -16,4 +16,8 @@ COPY . /app
 # Install Python dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
-CMD ["python", "app.py"]
+# Expose port (important for Railway)
+EXPOSE 5000
+
+# Use Gunicorn to run the application
+CMD ["gunicorn", "app:app", "--workers", "4", "--bind", "0.0.0.0:5000"]
