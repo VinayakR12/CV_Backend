@@ -179,7 +179,12 @@ def get_image():
 #     app.run(debug=True, host='0.0.0.0', port=5000)
 
 
-if __name__ == '__main__':
-    port = int(os.environ.get("PORT", 5000))
-    serve(app, host="0.0.0.0", port=port)
+# if __name__ == '__main__':
+#     port = int(os.environ.get("PORT", 5000))
+#     serve(app, host="0.0.0.0", port=port)
+
+if __name__ == "__main__":
+    port = os.environ.get("PORT", "5000")  # Default to 5000 if not set
+    print(f"Using port: {port}")  # Debugging
+    serve(app, host="0.0.0.0", port=int(port))  # Convert to int
 
