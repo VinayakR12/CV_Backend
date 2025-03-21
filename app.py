@@ -184,7 +184,11 @@ def get_image():
 #     serve(app, host="0.0.0.0", port=port)
 
 if __name__ == "__main__":
-    port = os.environ.get("PORT", "5000")  # Default to 5000 if not set
-    print(f"Using port: {port}")  # Debugging
-    serve(app, host="0.0.0.0", port=int(port))  # Convert to int
+    port = os.environ.get("PORT", "5000")  # Get PORT from env, default to 5000
+    if not port.isdigit():  # Ensure it's a valid number
+        raise ValueError(f"Invalid PORT value: {port}")
+    
+    print(f"🚀 Server starting on port: {port}")  # Debugging output
+    serve(app, host="0.0.0.0", port=int(port))  # Convert to int before passing
+
 
