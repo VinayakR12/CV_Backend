@@ -1,29 +1,29 @@
-# Use official Python 3.10 image
-FROM python:3.10
+# Use a lightweight Python image
+FROM python:3.10-slim
 
 # Set the working directory
 WORKDIR /app
 
-# Install OpenCV and system dependencies
+# Install system dependencies for OpenCV & YOLO
 RUN apt-get update && apt-get install -y \
     libglib2.0-0 \
     libsm6 \
     libxext6 \
     libxrender-dev \
     libgl1-mesa-glx \
-    && rm -rf /var/lib/apt/lists/*  # Fix for libGL.so.1 error
+    && rm -rf /var/lib/apt/lists/*
 
-# Copy the requirements file first (to leverage Docker caching)
+# Copy the requirements file first (for better Docker caching)
 COPY requirements.txt .
 
 # Install Python dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy the rest of the project files
+# Copy the application files
 COPY . .
 
-# Expose port for Railway deployment
+# Expose the application port
 EXPOSE 5000
 
 # Run the application with optimized Gunicorn settings
-CMD ["gunicorn", "app:app", "--workers", "2", "--threads", "1", "--timeout", "600", "-k", "gevent", "--bind", "0.0.0.0:5000"]
+CMD ["gunicorn", "app:app", "--workers", "1", "--threads", "1", "--timeout", "600", "--bind", "0.0.0.0:5000"]
