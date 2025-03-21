@@ -22,8 +22,8 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy the rest of the project files
 COPY . .
 
-# Expose port (important for Railway)
+# Expose port for Railway deployment
 EXPOSE 5000
 
-# Use Gunicorn to run the application
-CMD ["gunicorn", "app:app", "--workers", "4", "--bind", "0.0.0.0:5000"]
+# Run the application with optimized Gunicorn settings
+CMD ["gunicorn", "app:app", "--workers", "2", "--threads", "1", "--timeout", "600", "-k", "gevent", "--bind", "0.0.0.0:5000"]
